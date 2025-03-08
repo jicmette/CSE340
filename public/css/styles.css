@@ -1,6 +1,183 @@
+/*Import font from Google Fonts*/
+@import url("https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+
 /******* Change Box Model ***************/
 *,
 *:before,
 *:after {
   box-sizing: border-box;
+}
+
+/*CSS Variables*/
+:root {
+  --font-family: "Roboto", sans-serif;
+  --a-color: rgb(26, 26, 26);
+  --clear-font: rgb(255, 255, 255);
+}
+
+/*Main CSS*/
+html {
+  background-image: none;
+}
+
+body {
+  font-family: var(--font-family);
+  margin: 1rem;
+}
+
+h2 {
+  text-align: left;
+}
+
+a {
+  text-decoration: none;
+  color: var(--a-color);
+}
+
+a:hover {
+  color: rgb(76, 150, 215);
+}
+
+/*Header Styles*/
+
+header {
+  align-items: center;
+}
+
+#top-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.siteName {
+  padding: 1rem 0;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.siteName img {
+  width: 15%;
+}
+
+#tools a {
+  text-transform: uppercase;
+}
+
+/*Navigation Styles*/
+.nav {
+  background-color: black;
+  color: var(--clear-font);
+  padding: 1rem;
+}
+
+.nav ul {
+  display: flex;
+  list-style-type: none;
+  justify-content: space-around;
+  padding: 0;
+}
+
+/*Body Styles*/
+.container-delorean {
+  position: relative;
+  padding: 2rem 0;
+}
+
+.delorean-image {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+.text-overlay {
+  position: absolute;
+  top: 4rem;
+  left: 20px;
+  background-color: rgba(255, 255, 255, 0.603);
+  color: black;
+  padding: 10px;
+}
+
+#button-own img {
+  width: 70%;
+}
+
+#reviews {
+  line-height: 2rem;
+}
+
+.container-upgrades {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  justify-content: center;
+  padding: 1rem;
+}
+
+.upgrade {
+  background-color: rgb(76, 150, 215);
+  border: 2px solid #000000;
+  margin: 10px;
+  padding: 20px;
+  width: 200px;
+  text-align: center;
+}
+
+.upgrade img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.upgrade a {
+  display: block;
+  margin-top: 10px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.upgrade a:hover {
+  color: rgb(161, 45, 9);
+}
+
+/*Large view*/
+@media screen and (min-width: 600px) {
+  html {
+    background-image: url(../images/site/checkerboard.jpg);
+  }
+
+  body {
+    background-color: white;
+    max-width: 1200px;
+    margin: 1rem auto;
+    border: 5px solid rgb(76, 150, 215);
+    text-align: center;
+    border-radius: 1.5rem;
+  }
+
+  header {
+    padding: 1rem;
+  }
+
+  .delorean-image {
+    width: 60%;
+  }
+
+  #main-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    padding: 20px;
+  }
+
+  #reviews {
+    grid-column: 2/3;
+    line-height: 3rem;
+    text-align: left;
+    padding: 1rem;
+  }
+
+  #upgrades {
+    grid-column: 1/2;
+    grid-row: 1/2;
+    padding: 1rem;
+  }
 }
