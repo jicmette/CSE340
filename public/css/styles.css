@@ -116,9 +116,8 @@ header {
 .upgrade {
   background-color: rgb(76, 150, 215);
   border: 2px solid #000000;
-  margin: 10px;
-  padding: 20px;
-  width: 200px;
+  margin: 0.5rem;
+  padding: 0.5rem;
   text-align: center;
 }
 
