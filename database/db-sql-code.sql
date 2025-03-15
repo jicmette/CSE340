@@ -1,6 +1,6 @@
 -- Type: account_type
 -- DROP TYPE IF EXISTS public.account_type;
-CREATE TYPE public.account_type AS ENUM ('Employee', 'Admin');
+CREATE TYPE public.account_type AS ENUM ('Employee', 'Admin', 'Client');
 ALTER TYPE public.account_type OWNER TO cse340jicm;
 -- Table structure for table `classification`
 CREATE TABLE public.classification (
