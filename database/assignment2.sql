@@ -28,4 +28,5 @@ FROM inventory
     INNER JOIN classification ON inventory.classification_id = classification.classification_id
 WHERE classification_name = 'Sport';
 UPDATE inventory
-SET inv_image = REPLACE(inv_image, '/images/', '/images/vehicles/');
+SET inv_image = REPLACE(inv_image, '/images/', '/images/vehicles/'),
+    inv_thumbnail = REPLACE(inv_thumbnail, '/images/', '/images/vehicles/');
