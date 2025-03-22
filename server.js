@@ -13,7 +13,6 @@ const static = require("./routes/static");
 const baseController = require("./controllers/baseController");
 const inventoryRoute = require("./routes/inventoryRoute");
 const utilities = require("./utilities/");
-
 /* ***********************
  * View Enine and Templates
  *************************/
@@ -37,6 +36,8 @@ app.use(async (req, res, next) => {
   next({ status: 404, message: "Sorry, we appear to have lost that page." });
 });
 
+app.use("/500", inventoryRoute);
+
 /* ***********************
  * Express Error Handler
  * Place after all other middleware
@@ -44,16 +45,24 @@ app.use(async (req, res, next) => {
 app.use(async (err, req, res, next) => {
   let nav = await utilities.getNav();
   console.error(`Error at: "${req.originalUrl}": ${err.message}`);
+  let title, message;
   if (err.status == 404) {
+    title = "404 - Page Not Found";
     message = err.message;
+    res.render("errors/404", {
+      title,
+      message,
+      nav,
+    });
   } else {
-    message = "Oh no! There was a crash. Maybe try a different route?";
+    title = "500 - Server Error";
+    message = "Oh no! There was a crash! Maybe try a different route?";
+    res.status(500).render("errors/500", {
+      title,
+      message,
+      nav,
+    });
   }
-  res.render("errors/error", {
-    title: err.status || "Server Error",
-    message,
-    nav,
-  });
 });
 
 /* ***********************
