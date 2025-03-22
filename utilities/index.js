@@ -82,27 +82,26 @@ Util.buildClassificationGrid = async function (data) {
  * Build the classification view HTML
  * ************************************ */
 Util.buildItemDetails = async function (vehicleData) {
-  let itemHTML = `
-  <div class="item-detail">
-    <h1 class="item-title">${vehicleData.inv_year} ${vehicleData.inv_make} ${
+  let vehicleHTML = `
+  <div class="vehicle-detail">
+    <h1 class="vehicle-title">${vehicleData.inv_year} ${vehicleData.inv_make} ${
     vehicleData.inv_model
   }</h1>
     <img src="${vehicleData.inv_image}" alt="${vehicleData.inv_make} ${
     vehicleData.inv_model
   } image" />
-    <h3 class="price">$${new Intl.NumberFormat("en-US").format(
+  <h2>${vehicleData.inv_make} ${vehicleData.inv_model} Details</h3>
+    <h3><strong>Price:</strong> $${new Intl.NumberFormat("en-US").format(
       vehicleData.inv_price
-    )}</h3>
-    <p class="vehicle-description">Description: ${
-      vehicleData.inv_description
-    }</p>
-    <p>Color: ${vehicleData.inv_color}</p>
-    <p>Miles: ${new Intl.NumberFormat("en-US").format(
+    )}</h2>
+    <p><strong>Description:</strong> ${vehicleData.inv_description}</p>
+    <h3><strong>Color:</strong> ${vehicleData.inv_color}</h3>
+    <h3><strong>Miles:</strong> ${new Intl.NumberFormat("en-US").format(
       vehicleData.inv_miles
-    )}</p>
+    )}</h3>
   </div>
   `;
-  return itemHTML;
+  return vehicleHTML;
 };
 
 /* ****************************************

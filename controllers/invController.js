@@ -26,12 +26,12 @@ invCont.buildItemDetailById = async function (req, res, next) {
   try {
     const inv_id = req.params.inv_id;
     const vehicleData = await invModel.getInventoryItemById(inv_id);
-    const itemHTML = await utilities.buildItemDetails(vehicleData);
+    const vehicleHTML = await utilities.buildItemDetails(vehicleData);
     let nav = await utilities.getNav();
     res.render("./inventory/vehicle-details", {
       title: `${vehicleData.inv_make} ${vehicleData.inv_model}`,
       nav,
-      itemHTML,
+      vehicleHTML,
     });
   } catch (error) {
     console.error("Error building vehicle detail view");
