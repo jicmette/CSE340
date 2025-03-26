@@ -104,11 +104,99 @@ Util.buildItemDetails = async function (vehicleData) {
   return vehicleHTML;
 };
 
+/* **************************************
+ * Build the log in view HTML
+ * ************************************ */
+Util.buildLogInView = async function () {
+  const accountHTML = `
+    <div class="log-in">
+      <form>
+      <label>Email</label>
+        <input 
+          type="email" 
+          name="account_email" 
+          placeholder="Email" 
+          required 
+          aria-label="Email"
+        />
+        <label>Password</label>
+        <input 
+          type="password" 
+          name="account_password" 
+          placeholder="Password" 
+          required 
+          aria-label="Password"
+        />
+        <button type="submit">LOGIN</button>
+      </form>
+      <a href="/account/register">Don't have an account? Sign Up</a>
+    </div>
+  `;
+  return accountHTML;
+};
+
+/* **************************************
+ * Build the register view HTML
+ * ************************************ */
+Util.buildRegisterView = async function () {
+  const registerHTML = `
+  <div class="register-container">
+        <form id="register-form" action="/register" method="post">
+            <label for="first_name">First Name</label>
+            <input 
+                class="form-input" 
+                type="text" 
+                name="account_firstname" 
+                placeholder="First Name" 
+                required 
+                aria-label="First Name"
+            />
+
+            <label for="last_name">Last Name</label>
+            <input
+                class="form-input" 
+                type="text" 
+                name="account_lastname" 
+                placeholder="Last Name" 
+                required 
+                aria-label="Last Name"
+            />
+
+            <label for="email_address">Email Address</label>
+            <input
+                class="form-input" 
+                type="email" 
+                name="account_email" 
+                placeholder="Email Address" 
+                required 
+                aria-label="Email Address"
+            />
+
+            <label for="password">Password</label>
+            <input
+                class="form-input" 
+                type="password" 
+                name="account_password" 
+                placeholder="Password" 
+                required 
+                aria-label="Password"
+                minlength="12"
+                pattern="(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+]).{12,}" 
+                title="Password must be at least 12 characters long, contain at least 1 uppercase letter, 1 number, and 1 special character."
+            />
+
+            <button id="register-button" class="form-button" type="submit">Register</button>
+        </form>
+    </div>
+`;
+  return registerHTML;
+};
 /* ****************************************
  * Middleware For Handling Errors
  * Wrap other function in this for
  * General Error Handling
  **************************************** */
+
 Util.handleErrors = (fn) => (req, res, next) =>
   Promise.resolve(fn(req, res, next)).catch(next);
 
