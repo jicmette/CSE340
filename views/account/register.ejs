@@ -1,2 +1,63 @@
 <h1><%= title %></h1>
-<%- registerHTML %>
+
+<%- messages() %> <% if (errors) { %>
+<ul class="notice">
+  <% errors.array().forEach(error => { %>
+  <li><%= error.msg %></li>
+  <% }) %>
+</ul>
+<% } %>
+
+<div class="register-container">
+  <form action="/account/register" method="post">
+    <label for="account_firstname">First Name</label>
+    <input
+      class="form-input"
+      type="text"
+      name="account_firstname"
+      placeholder="First Name"
+      required
+      aria-label="First Name"
+    />
+
+    <label for="account_lastname">Last Name</label>
+    <input
+      class="form-input"
+      type="text"
+      name="account_lastname"
+      placeholder="Last Name"
+      required
+      aria-label="Last Name"
+    />
+
+    <label for="account_email">Email Address</label>
+    <input
+      class="form-input"
+      type="email"
+      name="account_email"
+      placeholder="Enter a valid email address"
+      required
+      aria-label="Email Address"
+    />
+
+    <label for="account_password">Password</label>
+    <span class="span-css"
+      >Passwords must be at least 12 characters and contain at least 1 number, 1
+      capital letter and 1 special character</span
+    >
+    <input
+      class="form-input"
+      type="password"
+      name="account_password"
+      placeholder="Password"
+      required
+      aria-label="Password"
+      minlength="12"
+      pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$"
+    />
+
+    <button id="register-button" class="form-button" type="submit">
+      Register
+    </button>
+  </form>
+</div>

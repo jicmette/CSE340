@@ -1,2 +1,26 @@
 <h1><%= title %></h1>
-<%- accountHTML %>
+
+<%- messages() %>
+
+<div class="log-in">
+  <form>
+    <label for="account_email">Email</label>
+    <input
+      type="email"
+      name="account_email"
+      placeholder="Email"
+      required
+      aria-label="Email"
+    />
+    <label for="account_password">Password</label>
+    <input
+      type="password"
+      name="account_password"
+      placeholder="Password"
+      required
+      aria-label="Password"
+    />
+    <button type="submit">LOGIN</button>
+  </form>
+  <a href="/account/register">Don't have an account? Sign Up</a>
+</div>

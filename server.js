@@ -16,6 +16,7 @@ const utilities = require("./utilities/");
 const session = require("express-session");
 const pool = require("./database/");
 const accountRoute = require("./routes/accountRoute");
+const bodyParser = require("body-parser");
 
 /* ***********************
  * Middleware
@@ -54,6 +55,9 @@ app.use(static);
 
 // Index route
 app.get("/", utilities.handleErrors(baseController.buildHome));
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
 // Inventory Routes
 app.use("/inv", inventoryRoute);

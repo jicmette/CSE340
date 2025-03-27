@@ -311,12 +311,33 @@ h1 {
   background-color: #21618c;
 }
 
+input:required:invalid,
+input:focus:invalid {
+  color: red;
+}
+
+input:required:valid {
+  color: #21618c;
+}
+
+.span-css {
+  font-size: 0.8rem;
+}
+
 /* Flash messages*/
 .notice {
+  color: #21618c;
   list-style: none;
-  color: red;
+  margin: 20px auto;
+  padding: 15px;
+  border-radius: 5px;
+  width: 80%;
+  max-width: 500px;
   text-align: center;
-  padding: 1rem;
+  font-size: 16px;
+  font-weight: bold;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  transition: opacity 0.3s ease-out; /* Smooth fade effect */
 }
 
 /*Large view*/
