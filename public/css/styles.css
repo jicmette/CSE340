@@ -324,8 +324,92 @@ input:required:valid {
   font-size: 0.8rem;
 }
 
+/*Management view*/
+.mgmt-view li {
+  list-style: none;
+  text-decoration: underline;
+  line-height: 2rem;
+}
+
+/*Add Classification view*/
+.add-classification,
+.add-inventory {
+  background-color: var(--log-in-back);
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 300px;
+  text-align: left;
+  padding: 1rem;
+  margin: 1rem auto;
+}
+
+.add-classification form,
+.add-inventory form {
+  margin: 1rem;
+  padding: 1rem;
+}
+
+.add-classification label,
+.add-inventory label {
+  color: white;
+}
+
+.add-classification input[type="text"],
+.add-inventory input[type="text"],
+.add-inventory input[type="number"],
+.add-inventory select {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+.add-inventory textarea {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+  font-size: 14px;
+  resize: vertical;
+  min-height: 100px;
+  background-color: #f9f9f9;
+}
+
+.add-inventory textarea:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.add-classification button,
+.add-inventory button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #242424;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.add-classification button:hover,
+.add-inventory button:hover {
+  background-color: #2d5a70;
+}
+
 /* Flash messages*/
-.notice {
+.notice,
+.flash-success,
+.flash-error {
   color: #21618c;
   list-style: none;
   margin: 20px auto;
@@ -406,5 +490,10 @@ input:required:valid {
 
   .vehicle-detail h2 {
     text-align: center;
+  }
+
+  /*Add Vehicle view*/
+  .add-inventory {
+    width: 60%;
   }
 }

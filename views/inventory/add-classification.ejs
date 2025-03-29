@@ -1,0 +1,12 @@
+<h1><%- title %></h1>
+
+<div class="add-classification">
+  <form action="/inv/add-classification" method="POST">
+    <label for="classification_name">Classification Name:</label>
+    <input type="text" name="classification_name" required />
+    <p>
+      Note: Classification name cannot contain spaces or special characters.
+    </p>
+    <button type="submit">Add Classification</button>
+  </form>
+</div>

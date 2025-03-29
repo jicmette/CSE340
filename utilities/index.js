@@ -6,7 +6,6 @@ const Util = {};
  ************************** */
 Util.getNav = async function (req, res, next) {
   let data = await invModel.getClassifications();
-  console.log(data);
   let list = "<ul>";
   list += '<li><a href="/" title="Home page">Home</a></li>';
   data.rows.forEach((row) => {
@@ -102,6 +101,21 @@ Util.buildItemDetails = async function (vehicleData) {
   </div>
   `;
   return vehicleHTML;
+};
+
+/* **************************************
+ * Build the dropdown for the add vehicles page
+ * ************************************ */
+Util.getClassificationsDropdown = async function (req, res, next) {
+  let data = await invModel.getClassifications();
+  let dropdown = '<select id="classification" name="classification">';
+  dropdown +=
+    '<option value="" selected>-- Choose a Classification --</option>'; // Default option
+  data.rows.forEach((row) => {
+    dropdown += `<option value="${row.classification_id}">${row.classification_name}</option>`;
+  });
+  dropdown += "</select>";
+  return dropdown;
 };
 
 /* ****************************************

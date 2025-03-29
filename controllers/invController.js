@@ -39,4 +39,77 @@ invCont.buildItemDetailById = async function (req, res, next) {
   }
 };
 
+/* ***************************
+ *  Build the Management view
+ * ************************** */
+invCont.buildMgmtView = async function (req, res, next) {
+  try {
+    let nav = await utilities.getNav();
+    res.render("./inventory/management", {
+      title: "Vehicle Management",
+      nav,
+      flashMessages: req.flash(),
+    });
+  } catch (error) {
+    console.error("Error rendering management view:", error);
+    next(error);
+  }
+};
+/* ***************************
+ *  Build the Add New Classification View, GET Request
+ * ************************** */
+
+invCont.buildAddClassificationView = async function (req, res, next) {
+  try {
+    let nav = await utilities.getNav();
+    res.render("inventory/add-classification", {
+      title: "Add New Classification",
+      nav,
+    });
+  } catch (error) {
+    console.error("Error rendering add classification view", error);
+    next(error);
+  }
+};
+
+/* ***************************
+ *  POST Request, take data from the User inserted in the New Classification Form
+ * ************************** */
+
+invCont.AddNewClassificationFromUser = async function (req, res, next) {
+  try {
+    const classification_name = req.body.classification_name;
+    const newClassification = await invModel.insertNewClassification(
+      classification_name
+    );
+    req.flash(
+      "success",
+      `The classification "${classification_name}" was successfully added.`
+    );
+    res.redirect("/inv");
+  } catch (error) {
+    console.error("Error adding classification:", error);
+    req.flash("error", "Failed to add classification. Please try again.");
+  }
+};
+
+/* ***************************
+ *  Build the dropdown in the add new vehicle form
+ * ************************** */
+
+invCont.buildAddVehicle = async function (req, res, next) {
+  try {
+    let nav = await utilities.getNav();
+    let dropdown = await utilities.getClassificationsDropdown();
+    res.render("./inventory/add-inventory", {
+      title: "Add New Vehicle",
+      nav,
+      dropdown,
+    });
+  } catch (error) {
+    console.error("Error rendering add vehicle view", error);
+    next(error);
+  }
+};
+
 module.exports = invCont;

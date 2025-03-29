@@ -1,0 +1,12 @@
+<h1><%- title %></h1>
+
+<% if (flashMessages.success) { %>
+<div class="flash-success"><%= flashMessages.success %></div>
+<% } %> <% if (flashMessages.error) { %>
+<div class="flash-error"><%= flashMessages.error %></div>
+<% } %>
+
+<ul class="mgmt-view">
+  <li><a href="/inv/add-classification">Add New Classification</a></li>
+  <li><a href="/inv/add-inventory">Add New Vehicle</a></li>
+</ul>

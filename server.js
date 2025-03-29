@@ -59,6 +59,9 @@ app.get("/", utilities.handleErrors(baseController.buildHome));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
+// Management Route
+app.use("/", inventoryRoute);
+
 // Inventory Routes
 app.use("/inv", inventoryRoute);
 
