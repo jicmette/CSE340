@@ -1,6 +1,7 @@
 // Needed Resources
 const express = require("express");
 const router = new express.Router();
+const inventoryValidate = require("../utilities/inventory-validation");
 const invController = require("../controllers/invController");
 
 // Route to build inventory by classification view
@@ -16,9 +17,22 @@ router.get("/", invController.buildMgmtView);
 router.get("/add-classification", invController.buildAddClassificationView);
 
 // Route to add a new classification from the user
-router.post("/add-classification", invController.AddNewClassificationFromUser);
+router.post(
+  "/add-classification",
+  inventoryValidate.classificationRules(),
+  inventoryValidate.checkClassificationData,
+  invController.addNewClassificationFromUser
+);
 
 // Route to Add Vehicle view
 router.get("/add-inventory", invController.buildAddVehicle);
+
+// Route to add a new vehicle
+router.post(
+  "/add-inventory",
+  inventoryValidate.vehicleRules(),
+  inventoryValidate.checkVehicleData,
+  invController.addNewVehicleFromUser
+);
 
 module.exports = router;

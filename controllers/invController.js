@@ -65,6 +65,7 @@ invCont.buildAddClassificationView = async function (req, res, next) {
     res.render("inventory/add-classification", {
       title: "Add New Classification",
       nav,
+      flashMessages: req.flash(),
     });
   } catch (error) {
     console.error("Error rendering add classification view", error);
@@ -76,7 +77,7 @@ invCont.buildAddClassificationView = async function (req, res, next) {
  *  POST Request, take data from the User inserted in the New Classification Form
  * ************************** */
 
-invCont.AddNewClassificationFromUser = async function (req, res, next) {
+invCont.addNewClassificationFromUser = async function (req, res, next) {
   try {
     const classification_name = req.body.classification_name;
     const newClassification = await invModel.insertNewClassification(
@@ -89,7 +90,8 @@ invCont.AddNewClassificationFromUser = async function (req, res, next) {
     res.redirect("/inv");
   } catch (error) {
     console.error("Error adding classification:", error);
-    req.flash("error", "Failed to add classification. Please try again.");
+    req.flash("error", "Failed to add classification. Please try again."); // Generic error message
+    res.redirect("/add-classification"); // Redirect back to the form
   }
 };
 
@@ -105,10 +107,53 @@ invCont.buildAddVehicle = async function (req, res, next) {
       title: "Add New Vehicle",
       nav,
       dropdown,
+      flashMessages: req.flash(),
     });
   } catch (error) {
     console.error("Error rendering add vehicle view", error);
     next(error);
+  }
+};
+
+/* ***************************
+ *  POST request, take data from the user to add a new vehicle
+ * ************************** */
+invCont.addNewVehicleFromUser = async function (req, res, next) {
+  try {
+    const {
+      classification,
+      inv_make,
+      inv_model,
+      inv_year,
+      inv_description,
+      inv_image,
+      inv_thumbnail,
+      inv_price,
+      inv_miles,
+      inv_color,
+    } = req.body; // Receives for data.
+
+    const newVehicle = await invModel.insertNewVehicle({
+      classification_id: classification, // Mapping dropdown value to classification_id
+      inv_make,
+      inv_model,
+      inv_year,
+      inv_description,
+      inv_image,
+      inv_thumbnail,
+      inv_price,
+      inv_miles,
+      inv_color,
+    }); // Pass data to the model
+    req.flash(
+      "success",
+      `The vehicle "${inv_make} ${inv_model}" was successfully added.`
+    );
+    res.redirect("/inv");
+  } catch (error) {
+    console.error("Error adding vehicle:", error);
+    req.flash("error", "Failed to add vehicle. Please try again.");
+    res.redirect("/add-inventory");
   }
 };
 

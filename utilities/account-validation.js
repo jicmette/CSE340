@@ -6,23 +6,25 @@ const accountModel = require("../models/account-model");
 /*  **********************************
  *  Registration Data Validation Rules
  * ********************************* */
-validate.registationRules = () => {
+validate.registrationRules = () => {
   return [
     // firstname is required and must be string
     body("account_firstname")
       .trim()
       .escape()
       .notEmpty()
+      .withMessage("Please provide a first name.")
       .isLength({ min: 1 })
-      .withMessage("Please provide a first name."), // on error this message is sent.
+      .withMessage("Name should be more than 1 character."),
 
     // lastname is required and must be string
     body("account_lastname")
       .trim()
       .escape()
       .notEmpty()
+      .withMessage("Please provide a last name.") // on error this message is sent.
       .isLength({ min: 2 })
-      .withMessage("Please provide a last name."), // on error this message is sent.
+      .withMessage("Last name should be more than 2 characters."),
 
     // valid email is required and cannot already exist in the database
     body("account_email")
@@ -42,8 +44,10 @@ validate.registationRules = () => {
     body("account_password")
       .trim()
       .notEmpty()
+      .withMessage("Password is required")
+      .isLength({ min: 12 })
+      .withMessage("Password must be at least 12 characters long.")
       .isStrongPassword({
-        minLength: 12,
         minLowercase: 1,
         minUppercase: 1,
         minNumbers: 1,

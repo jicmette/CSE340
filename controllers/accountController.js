@@ -37,10 +37,8 @@ async function registerAccount(req, res) {
     account_password,
   } = req.body;
 
-  // Hash the password before storing
   let hashedPassword;
   try {
-    // regular password and cost (salt is generated automatically)
     hashedPassword = await bcrypt.hashSync(account_password, 10);
   } catch (error) {
     req.flash(
@@ -53,8 +51,6 @@ async function registerAccount(req, res) {
       errors: null,
     });
   }
-
-  //console.log("Received data:", req.body);
 
   const regResult = await accountModel.registerAccount(
     account_firstname,
