@@ -1,4 +1,6 @@
 const invModel = require("../models/inventory-model");
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 const Util = {};
 
 /* ************************
@@ -78,7 +80,7 @@ Util.buildClassificationGrid = async function (data) {
 };
 
 /* **************************************
- * Build the classification view HTML
+ * Build the vehicle details view HTML
  * ************************************ */
 Util.buildItemDetails = async function (vehicleData) {
   let vehicleHTML = `
@@ -110,7 +112,7 @@ Util.getClassificationsDropdown = async function (req, res, next) {
   let data = await invModel.getClassifications();
   let dropdown = '<select id="classification" name="classification" required>';
   dropdown +=
-    '<option value="" selected>-- Choose a Classification --</option>'; // Default option
+    '<option value="" selected>-- Choose a Classification --</option>';
   data.rows.forEach((row) => {
     dropdown += `<option value="${row.classification_id}">${row.classification_name}</option>`;
   });
@@ -118,6 +120,72 @@ Util.getClassificationsDropdown = async function (req, res, next) {
   return dropdown;
 };
 
+/* ****************************************
+ * Middleware to check token validity
+ **************************************** */
+Util.checkJWTToken = (req, res, next) => {
+  if (req.cookies.jwt) {
+    jwt.verify(
+      req.cookies.jwt,
+      process.env.ACCESS_TOKEN_SECRET,
+      function (err, accountData) {
+        if (err) {
+          req.flash("Please log in");
+          res.clearCookie("jwt");
+          return res.redirect("/account/login");
+        }
+        res.locals.accountData = accountData;
+        res.locals.loggedin = 1;
+        next();
+      }
+    );
+  } else {
+    next();
+  }
+};
+
+/* ****************************************
+ *  Check Login
+ * ************************************ */
+Util.checkLogin = (req, res, next) => {
+  if (res.locals.loggedin) {
+    next();
+  } else {
+    req.flash("notice", "Please log in.");
+    return res.redirect("/account/login");
+  }
+};
+
+Util.buildClassificationList = async function (selectedId) {
+  try {
+    let data = await invModel.getClassifications();
+    if (!data.rows || data.rows.length === 0) {
+      console.error("No classifications found in the database.");
+      return '<p class="error">No classifications available.</p>';
+    }
+
+    let classificationSelect = `
+      <select id="classificationList" name="classification_id" required>
+        <option value="" ${
+          !selectedId ? "selected" : ""
+        }>-- Choose a Classification --</option>
+    `;
+
+    data.rows.forEach((row) => {
+      classificationSelect += `
+        <option value="${row.classification_id}" ${
+        row.classification_id === parseInt(selectedId) ? "selected" : ""
+      }>${row.classification_name}</option>
+      `;
+    });
+
+    classificationSelect += "</select>";
+    return classificationSelect;
+  } catch (error) {
+    console.error("Error generating classification list:", error);
+    return '<p class="error">Unable to load classifications.</p>';
+  }
+};
 /* ****************************************
  * Middleware For Handling Errors
  * Wrap other function in this for

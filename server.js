@@ -17,6 +17,7 @@ const session = require("express-session");
 const pool = require("./database/");
 const accountRoute = require("./routes/accountRoute");
 const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
 
 /* ***********************
  * Middleware
@@ -53,14 +54,17 @@ app.set("layout", "./layouts/layout"); // not at views root
  *************************/
 app.use(static);
 
-// Index route
-app.get("/", utilities.handleErrors(baseController.buildHome));
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
-// Management Route
-app.use("/", inventoryRoute);
+//Cookie Parser
+app.use(cookieParser());
+
+//Login Process
+app.use(utilities.checkJWTToken);
+
+// Index route
+app.get("/", utilities.handleErrors(baseController.buildHome));
 
 // Inventory Routes
 app.use("/inv", inventoryRoute);

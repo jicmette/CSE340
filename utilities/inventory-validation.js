@@ -1,4 +1,5 @@
 const { body, validationResult } = require("express-validator");
+const utilities = require("../utilities/index");
 
 const inventoryValidate = {
   // Validation rules for adding a new classification
@@ -90,6 +91,48 @@ const inventoryValidate = {
       .notEmpty()
       .withMessage("Color is required."),
   ],
+
+  // Validation middleware to handle vehicle data errors during update process
+  checkUpdateData: async (req, res, next) => {
+    const {
+      classification_id,
+      inv_make,
+      inv_model,
+      inv_year,
+      inv_description,
+      inv_image,
+      inv_thumbnail,
+      inv_price,
+      inv_miles,
+      inv_color,
+      inv_id,
+    } = req.body;
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      req.flash("error", errors.array()[0].msg);
+
+      return res.render("./inventory/edit-inventory", {
+        title: `Edit ${inv_make} ${inv_model}`,
+        classificationSelect: await utilities.buildClassificationList(
+          classification_id
+        ),
+        errors: errors.array(),
+        inv_id,
+        classification_id,
+        inv_make,
+        inv_model,
+        inv_year,
+        inv_description,
+        inv_image,
+        inv_thumbnail,
+        inv_price,
+        inv_miles,
+        inv_color,
+      });
+    }
+    next();
+  },
 
   // Validation middleware to handle vehicle data errors
   checkVehicleData: async (req, res, next) => {

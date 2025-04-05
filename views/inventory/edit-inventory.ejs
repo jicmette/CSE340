@@ -1,0 +1,94 @@
+<h1><%- title %></h1>
+
+<span>ALL FIELDS ARE REQUIRED</span>
+
+<div class="edit-inventory">
+  <form action="/inv/update" method="post">
+    <label for="classification">Classification</label>
+    <%- classificationSelect %>
+
+    <label for="inv_make">Make:</label>
+    <input
+      type="text"
+      name="inv_make"
+      required
+      minlength="3"
+      placeholder="Min of 3 characters"
+      title="Make must be at least 3 characters long"
+      value="<%= inv_make %>"
+    />
+
+    <label for="inv_model">Model:</label>
+    <input
+      type="text"
+      name="inv_model"
+      required
+      minlength="3"
+      placeholder="Min of 3 characters"
+      title="Make must be at least 3 characters long"
+      value="<%= inv_model %>"
+    />
+
+    <label for="inv_description">Description:</label>
+    <textarea name="inv_description" required><%= inv_description %></textarea>
+
+    <label for="inv_image">Image Path:</label>
+    <input
+      type="text"
+      name="inv_image"
+      required
+      placeholder="/images/vehicles/no-image.png"
+      value="<%= inv_image %>"
+    />
+
+    <label for="inv_thumbnail">Thumbnail Path:</label>
+    <input
+      type="text"
+      name="inv_thumbnail"
+      required
+      placeholder="/images/vehicles/no-image.png"
+      value="<%= inv_thumbnail %>"
+    />
+
+    <label for="price">Price:</label>
+    <input
+      type="number"
+      name="inv_price"
+      required
+      min="0"
+      step="0.01"
+      placeholder="decimal or integer"
+      value="<%= inv_price %>"
+    />
+
+    <label for="inv_year">Year:</label>
+    <input
+      type="number"
+      name="inv_year"
+      required
+      min="1900"
+      max="2099"
+      placeholder="4-digit year"
+      value="<%= inv_year %>"
+    />
+
+    <label for="miles">Miles:</label>
+    <input
+      type="number"
+      name="inv_miles"
+      required
+      min="0"
+      value="<%= inv_miles %>"
+    />
+
+    <label for="color">Color:</label>
+
+    <input type="text" name="inv_color" value="<%= inv_color %>" required />
+
+    <% if (inv_id) { %>
+    <input type="hidden" name="inv_id" value="<%= inv_id %>" />
+    <% } %>
+
+    <button type="submit">Update Vehicle</button>
+  </form>
+</div>

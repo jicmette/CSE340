@@ -333,7 +333,8 @@ input:required:valid {
 
 /*Add Classification view*/
 .add-classification,
-.add-inventory {
+.add-inventory,
+.edit-inventory {
   background-color: var(--log-in-back);
   border-radius: 10px;
   padding: 20px;
@@ -345,20 +346,25 @@ input:required:valid {
 }
 
 .add-classification form,
-.add-inventory form {
+.add-inventory form,
+.edit-inventory form {
   margin: 1rem;
   padding: 1rem;
 }
 
 .add-classification label,
-.add-inventory label {
+.add-inventory label,
+.edit-inventory label {
   color: white;
 }
 
 .add-classification input[type="text"],
 .add-inventory input[type="text"],
 .add-inventory input[type="number"],
-.add-inventory select {
+.add-inventory select,
+.edit-inventory input[type="text"],
+.edit-inventory input[type="number"],
+.edit-inventory select {
   width: 100%;
   padding: 10px;
   margin: 10px 0;
@@ -368,7 +374,8 @@ input:required:valid {
   font-size: 14px;
 }
 
-.add-inventory textarea {
+.add-inventory textarea,
+.edit-inventory textarea {
   width: 100%;
   padding: 10px;
   margin: 10px 0;
@@ -381,14 +388,16 @@ input:required:valid {
   background-color: #f9f9f9;
 }
 
-.add-inventory textarea:focus {
+.add-inventory textarea:focus,
+.edit-inventory textarea:focus {
   border-color: #007bff;
   outline: none;
   box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
 .add-classification button,
-.add-inventory button {
+.add-inventory button,
+.edit-inventory button {
   width: 100%;
   padding: 10px;
   margin-top: 10px;
@@ -402,7 +411,8 @@ input:required:valid {
 }
 
 .add-classification button:hover,
-.add-inventory button:hover {
+.add-inventory button:hover,
+.edit-inventory button:hover {
   background-color: #2d5a70;
 }
 
