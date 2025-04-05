@@ -14,6 +14,8 @@
   --a-color: rgb(26, 26, 26);
   --clear-font: rgb(255, 255, 255);
   --log-in-back: #2980b9;
+  --button: #242424;
+  --button-hover: #2d5a70;
 }
 
 /*Main CSS*/
@@ -28,11 +30,16 @@ body {
 
 h2 {
   text-align: left;
+  padding: 1rem;
 }
 
 a {
   text-decoration: none;
   color: var(--a-color);
+}
+
+p {
+  padding: 1rem;
 }
 
 a:hover {
@@ -243,7 +250,7 @@ h1 {
   margin-top: 10px;
   border: none;
   border-radius: 5px;
-  background-color: #242424;
+  background-color: var(--button);
   color: white;
   font-size: 16px;
   cursor: pointer;
@@ -251,7 +258,7 @@ h1 {
 }
 
 .log-in button:hover {
-  background-color: #2d5a70;
+  background-color:var(--button-hover);
 }
 
 .log-in a {
@@ -300,7 +307,7 @@ h1 {
   margin-top: 10px;
   border: none;
   border-radius: 5px;
-  background-color: #2980b9;
+  background-color: var(--button);
   color: white;
   font-size: 16px;
   cursor: pointer;
@@ -308,7 +315,7 @@ h1 {
 }
 
 .form-button:hover {
-  background-color: #21618c;
+  background-color: var(--button-hover);
 }
 
 input:required:invalid,
@@ -325,11 +332,128 @@ input:required:valid {
 }
 
 /*Management view*/
-.mgmt-view li {
-  list-style: none;
-  text-decoration: underline;
-  line-height: 2rem;
+.mgmt-view {
+  display: flex;
+  flex-direction: row;
+  justify-self: center;
+  padding: 0;
+  gap: 2rem;
 }
+
+
+.add-link {
+  list-style: none;
+  line-height: 2rem;
+  background-color: var(--button);
+  padding: 10px 20px; 
+  font-size: 16px; 
+  font-weight: bold; 
+  border: none; 
+  border-radius: 4px;
+  cursor: pointer; 
+  color: white;
+  text-decoration: none;
+}
+
+.add-link:hover {
+  background-color: var(--button-hover);
+  color: white;
+}
+
+/*Dropdown design*/
+#classificationList, #classification { 
+  display: block;
+  text-align: center;
+  width: 90%; 
+  padding: 1rem;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #4A4A4A; 
+  background-color: #F1F1F1; 
+  border: 2px solid var(--log-in-back); 
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  appearance: none; 
+  cursor: pointer;
+  transition: all 0.3s ease-in-out; 
+  margin: 1rem auto;
+}
+
+#classificationList:hover,
+#classificationList:focus, #classification:hover, #classification:focus {
+  background-color: #E7F3FF;
+  border-color: #0056b3;
+  outline: none; 
+}
+
+
+#classificationList option {
+  font-size: 15px;
+  padding: 10px;
+  background-color: #FFF; 
+  color: #4A4A4A;
+}
+
+
+#classificationList option:checked {
+  background-color: var(--log-in-back); 
+  color: #FFF; 
+}
+
+/*Table in the inventory management design*/
+table {
+  width: 80%;
+  border-collapse: collapse; 
+  margin: 1.5rem auto;
+  font-size: 16px;
+  font-family: Arial, sans-serif;
+  text-align: left; 
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 1.5rem;
+}
+
+
+thead th {
+  background-color: var(--log-in-back); 
+  color: #FFF; 
+  font-weight: bold; 
+  padding: 1rem; 
+}
+
+tbody td {
+  padding: 1rem;
+}
+
+
+tbody td a {
+  text-decoration: none;
+  color: var(--a-color); 
+  font-weight: bold;
+  transition: color 0.3s ease; 
+}
+
+tbody td a:hover {
+  color: #ffffff; 
+}
+
+.modify {
+  background-color: var(--button); 
+  color: white; 
+  padding: 10px 20px; 
+  font-size: 16px; 
+  font-weight: bold; 
+  border: none; 
+  border-radius: 4px;
+  cursor: pointer; 
+  transition: background-color 0.3s ease; 
+}
+
+.modify:hover {
+  background-color: var(--button-hover);
+}
+
+
+
 
 /*Add Classification view*/
 .add-classification,
@@ -403,7 +527,7 @@ input:required:valid {
   margin-top: 10px;
   border: none;
   border-radius: 5px;
-  background-color: #242424;
+  background-color: var(--button);
   color: white;
   font-size: 16px;
   cursor: pointer;
@@ -413,7 +537,70 @@ input:required:valid {
 .add-classification button:hover,
 .add-inventory button:hover,
 .edit-inventory button:hover {
-  background-color: #2d5a70;
+  background-color: var(--button-hover);
+}
+
+/*Delete confirmation view*/
+.delete-form {
+  background-color: #f9f9f9; 
+  padding: 1rem; 
+  border: 1px solid #ddd; 
+  border-radius: 1.5rem; 
+  width: 400px; 
+  margin: 1rem auto; 
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.delete-fieldset {
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.delete-label {
+  display: block; 
+  margin-bottom: 5px;
+  font-weight: bold; 
+  color: #555; 
+}
+
+
+.delete-input {
+  width: 100%; 
+  padding: 8px; 
+  margin-bottom: 15px;
+  font-size: 16px; 
+  color: #333; 
+  background-color: #e9ecef; 
+  border: 1px solid #ccc; 
+  border-radius: 4px; 
+  cursor: not-allowed; /
+}
+
+
+.deletion-message {
+  font-size: 18px; 
+  color: #d9534f; 
+  font-weight: bold; 
+  margin-bottom: 20px; 
+}
+
+
+.delete-button {
+  background-color: #d9534f; 
+  color: white; 
+  padding: 10px 20px; 
+  font-size: 16px; 
+  font-weight: bold; 
+  border: none; 
+  border-radius: 4px;
+  cursor: pointer; 
+  transition: background-color 0.3s ease; 
+}
+
+
+.delete-button:hover {
+  background-color: #c9302c;
 }
 
 /* Flash messages*/
@@ -503,7 +690,7 @@ input:required:valid {
   }
 
   /*Add Vehicle view*/
-  .add-inventory {
+  .add-inventory, .edit-inventory {
     width: 60%;
   }
 }

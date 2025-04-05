@@ -1,24 +1,24 @@
-<p>Confirm Deletion - The deletion is permanent.</p>
-<form action="/inv/delete" method="post">
-    <fieldset>
-        <label for="invMake">Make:</label>
-        <input type="text" readonly <% if (locals.inv_make) { %>
+<p class="deletion-message">Confirm Deletion - The deletion is permanent.</p>
+<form action="/inv/delete" method="post" class="delete-form">
+    <fieldset class="delete-fieldset">
+        <label for="invMake" class="delete-label">Make:</label>
+        <input type="text" readonly class="delete-input" <% if (locals.inv_make) { %>
         value="<%= locals.inv_make %>" <% } %> />
         
-        <label for="invModel">Model:</label>
-        <input type="text" readonly <% if (locals.inv_model) { %>
+        <label for="invModel" class="delete-label">Model:</label>
+        <input type="text" readonly class="delete-input" <% if (locals.inv_model) { %>
         value="<%= locals.inv_model %>" <% } %> />
         
-        <label for="invPrice">Price:</label>
-        <input type="text" readonly <% if (locals.inv_price) { %>
+        <label for="invPrice" class="delete-label">Price:</label>
+        <input type="text" readonly class="delete-input" <% if (locals.inv_price) { %>
         value="<%= locals.inv_price %>" <% } %> />
         
-        <label for="invYear">Year:</label>
-        <input type="text" readonly <% if (locals.inv_year) { %>
+        <label for="invYear" class="delete-label">Year:</label>
+        <input type="text" readonly class="delete-input" <% if (locals.inv_year) { %>
         value="<%= locals.inv_year %>" <% } %> />
         
-        <input type="hidden" name="inv_id" <% if (locals.inv_id) { %>
+        <input type="hidden" name="inv_id" class="delete-hidden" <% if (locals.inv_id) { %>
         value="<%= locals.inv_id %>" <% } %> />
     </fieldset>
-    <button type="submit">Delete Vehicle</button>
+    <button type="submit" class="delete-button">Delete Vehicle</button>
 </form>
