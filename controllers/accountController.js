@@ -141,6 +141,18 @@ async function accountLogin(req, res) {
 }
 
 /* ****************************************
+ *  Process logout
+ * ************************************ */
+
+async function accountLogout(req, res) {
+  res.clearCookie("jwt");
+  res.locals.loggedin = 0;
+  res.locals.accountData = "";
+  req.flash("notice", "You are now logged out.");
+  res.redirect("/");
+}
+
+/* ****************************************
  *  Build account management view
  * ************************************ */
 async function buildAccountManagementView(req, res, next) {
@@ -149,6 +161,7 @@ async function buildAccountManagementView(req, res, next) {
     res.render("account/account-management", {
       title: "Account Management",
       nav,
+      //accountData: req.session.accountData,
       flashMessages: req.flash(),
     });
   } catch (error) {
@@ -156,10 +169,120 @@ async function buildAccountManagementView(req, res, next) {
     next(error);
   }
 }
+
+/* ****************************************
+ *  Build edit accout information
+ * ************************************ */
+async function buildEditAccountView(req, res, next) {
+  try {
+    let nav = await utilities.getNav();
+    res.render("account/update",{
+      title: "Edit Account",
+      nav,
+      flashMessages: req.flash(),
+    });
+  } catch (error) {
+    console.error("Error rendering the edit account view");
+    next(error);
+  }
+}
+
+/* ****************************************
+ * Update Account data
+ * ************************************ */
+async function updateAccount(req, res, next) {
+  try {
+    const { account_firstname, account_lastname, account_email } = req.body;
+    const account_id = req.params.account_id || res.locals.accountData.account_id;
+
+    if (!account_id) {
+      req.flash("error", "Invalid account ID.");
+      return res.redirect("/account");
+    }
+
+    const updateAccount = await accountModel.updateUser(account_id, account_firstname, account_lastname, account_email);
+
+    if (!updateAccount) {
+      req.flash("error", "Failed to update account.");
+      return res.redirect("/account");
+    }
+
+    req.session.accountData = {
+      ...(req.session.accountData || {}),
+      account_firstname,
+      account_lastname,
+      account_email,
+    };
+
+    const newToken = jwt.sign(
+      {
+        account_id,
+        account_firstname,
+        account_lastname,
+        account_email,
+      },
+      process.env.ACCESS_TOKEN_SECRET, 
+      { expiresIn: "1h" }
+    );
+
+    res.cookie("jwt", newToken, { httpOnly: true, secure: true });
+
+    req.flash("success", "Account updated successfully.");
+    res.redirect(`/account`);
+  } catch (error) {
+    console.error("Error updating account:", error.message);
+    req.flash("error", "Error updating account.");
+    next(error);
+  }
+}
+
+/* ****************************************
+ * Change Password
+ * ************************************ */
+async function changePassword(req, res, next) {
+  try {
+    const { current_password, new_password } = req.body;
+    const account_id = req.session.accountData?.account_id; 
+
+    if (!account_id) {
+      req.flash("error", "No account ID found. Please log in.");
+      return res.redirect("/account");
+    }
+
+    const user = await accountModel.getPasswordById(account_id);
+    if (!user) {
+      req.flash("error", "Account not found.");
+      return res.redirect("/account");
+    }
+    const itMatch = await bcrypt.compare(current_password, user.account_password);
+    if (!itMatch) {
+      req.flash("error", "Current password is incorrect.");
+      return res.redirect("/account/management");
+    }
+
+    const hashedPassword = await bcrypt.hash(new_password, 10);
+
+    const passwordUpdateSuccess = await accountModel.updatePassword(account_id, hashedPassword);
+
+    if (passwordUpdateSuccess) {
+      req.flash("success", "Password updated successfully.");
+      res.redirect("/account/management"); // Redirect after successful update
+    } else {
+      req.flash("error", "Failed to update the password. Please try again.");
+      res.redirect("/account/management");
+    }
+  } catch (error) {
+    console.error("Error updating password for account ID:", account_id, "-", error.message);
+    req.flash("error", "An unexpected error occurred. Please try again later.");
+    next(error);
+  }
+}
+
+
 module.exports = {
   buildLogin,
   buildRegister,
   registerAccount,
   accountLogin,
-  buildAccountManagementView,
+  buildAccountManagementView, accountLogout, buildEditAccountView, updateAccount, changePassword
 };

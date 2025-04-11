@@ -34,4 +34,21 @@ router.post(
   utilities.handleErrors(accountController.registerAccount)
 );
 
+//Route to edit account view
+router.get("/update/:account_id", utilities.handleErrors(accountController.buildEditAccountView));
+
+//Process the account updated data
+router.post("/update/:account_id", regValidate.updateRules(), regValidate.checkUpdateData, utilities.handleErrors(accountController.updateAccount));
+
+// Logout Route CHECK
+router.get("/logout", utilities.handleErrors(accountController.accountLogout))
+
+//Rute to change password
+router.post(
+  "/change-password", regValidate.passwordChangeRules(),
+  regValidate.checkPasswordChangeData,
+  accountController.changePassword
+);
+
+
 module.exports = router;

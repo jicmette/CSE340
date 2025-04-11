@@ -156,6 +156,34 @@ Util.checkLogin = (req, res, next) => {
   }
 };
 
+/* ****************************************
+ *  Check Inventory Access by Roles
+ * ************************************ */
+
+Util.checkInventoryAccess = (req, res, next) => {
+  if (req.cookies.jwt) {
+    jwt.verify(req.cookies.jwt, process.env.ACCESS_TOKEN_SECRET, (err, accountData) => {
+      if (err) {
+        req.flash("notice", "Your session has expired. Please log in again to continue.");
+        res.clearCookie("jwt");
+        res.redirect("/account/login");
+      }
+      res.locals.accountData = accountData;
+
+      const allowedRoles = ["Admin", "Employee"];
+      if (!allowedRoles.includes(accountData.account_type)) {
+        req.flash ("notice", "You do not have sufficient permission to this resource.");
+        res.redirect("/account/login");
+      }
+      next();
+    });
+  } else {
+    req.flash("notice", "Please log in to access this resource.");
+    res.redirect("/account/login");
+  }
+};
+
+
 Util.buildClassificationList = async function (selectedId) {
   try {
     let data = await invModel.getClassifications();

@@ -66,7 +66,7 @@ validate.checkRegData = async (req, res, next) => {
   errors = validationResult(req);
   if (!errors.isEmpty()) {
     let nav = await utilities.getNav();
-    res.render("account/register", {
+    res.render(`/account/update/${account_id}`, {
       errors,
       title: "Registration",
       nav,
@@ -116,6 +116,130 @@ validate.checkLoginData = async (req, res, next) => {
     });
     return;
   }
+  next();
+};
+
+/* **********************************
+ * Update Data Rules
+ * ********************************* */
+validate.updateRules = () => {
+  return [
+    body("account_firstname")
+      .trim()
+      .escape()
+      .notEmpty()
+      .withMessage("Please provide a first name.")
+      .isLength({ min: 1 })
+      .withMessage("Name should be more than 1 character."),
+
+    body("account_lastname")
+      .trim()
+      .escape()
+      .notEmpty()
+      .withMessage("Please provide a last name.") 
+      .isLength({ min: 2 })
+      .withMessage("Last name should be more than 2 characters."),
+
+    body("account_email")
+      .trim()
+      .isEmail()
+      .normalizeEmail()
+      .withMessage("A valid email is required.")
+      .custom(async (account_email, { req }) => {
+        const emailExists = await accountModel.checkExistingEmail(
+          account_email, req.params.account_id
+        );
+        if (emailExists) {
+          throw new Error("Email exists. Please log in or use a different email.");
+        }
+      }),
+  ];
+};
+
+/* *****************************
+ * Check Data and Return Errors or Continue to Update
+ * ***************************** */
+validate.checkUpdateData = async (req, res, next) => {
+  const { account_firstname, account_lastname, account_email } = req.body;
+  const account_id = req.params.account_id || res.locals.accountData?.account_id;
+
+  let errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    let nav = await utilities.getNav();
+    
+    const errorMessages = errors.array().map(error => ({
+      msg: error.msg,
+      param: error.param
+    }));
+
+    return res.render("account/update", {
+      errors: errorMessages,
+      title: "EditAccount",
+      nav,
+      account_firstname,
+      account_lastname,
+      account_email,
+      account_id,
+    });
+  }
+  
+  next();
+};
+
+/* **********************************
+ * Password Change Validation Rules
+ * ********************************* */
+validate.passwordChangeRules = () => {
+  return [
+    body("current_password")
+      .trim()
+      .notEmpty()
+      .withMessage("Current password is required."),
+
+    body("new_password")
+      .trim()
+      .notEmpty()
+      .withMessage("New password is required.")
+      .isLength({ min: 12 })
+      .withMessage("New password must be at least 12 characters long.")
+      .isStrongPassword({
+        minLowercase: 1,
+        minUppercase: 1,
+        minNumbers: 1,
+        minSymbols: 1,
+      })
+      .withMessage("New password must include at least 1 uppercase letter, 1 number, and 1 special character."),
+  ];
+};
+
+/* *****************************
+ * Check Password Change Data and Return Errors or Continue
+ * ***************************** */
+validate.checkPasswordChangeData = async (req, res, next) => {
+  const { current_password, new_password } = req.body;
+  const account_id = req.session.accountData?.account_id || res.locals.accountData?.account_id;
+
+  let errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    let nav = await utilities.getNav();
+    
+    const errorMessages = errors.array().map(error => ({
+      msg: error.msg,
+      param: error.param,
+    }));
+
+    return res.render("account/update", {
+      errors: errorMessages,
+      title: "Change Password",
+      nav,
+      current_password,
+      new_password,
+      account_id,
+    });
+  }
+
   next();
 };
 
