@@ -175,7 +175,7 @@ validate.checkUpdateData = async (req, res, next) => {
 
     return res.render("account/update", {
       errors: errorMessages,
-      title: "EditAccount",
+      title: "Edit Account",
       nav,
       account_firstname,
       account_lastname,

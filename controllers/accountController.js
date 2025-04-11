@@ -242,22 +242,34 @@ async function updateAccount(req, res, next) {
 async function changePassword(req, res, next) {
   try {
     const { current_password, new_password } = req.body;
-    const account_id = req.session.accountData?.account_id; 
+
+    const account_id = req.session.accountData?.account_id || req.body.account_id;
 
     if (!account_id) {
       req.flash("error", "No account ID found. Please log in.");
       return res.redirect("/account");
     }
 
-    const user = await accountModel.getPasswordById(account_id);
+    if (!req.session.accountData?.account_id && req.body.account_id) {
+      req.session.accountData = {
+        ...req.session.accountData,
+        account_id: req.body.account_id,
+      };
+    }
+
+    // Fetch user data from the database
+    const user = await accountModel.getAccountById(account_id);
     if (!user) {
       req.flash("error", "Account not found.");
       return res.redirect("/account");
     }
-    const itMatch = await bcrypt.compare(current_password, user.account_password);
-    if (!itMatch) {
+
+    // Verify current password
+    const isMatch = await bcrypt.compare(current_password, user.account_password);
+    if (!isMatch) {
       req.flash("error", "Current password is incorrect.");
-      return res.redirect("/account/management");
+      return res.redirect(`/account`);
+
     }
 
     const hashedPassword = await bcrypt.hash(new_password, 10);
@@ -265,19 +277,20 @@ async function changePassword(req, res, next) {
     const passwordUpdateSuccess = await accountModel.updatePassword(account_id, hashedPassword);
 
     if (passwordUpdateSuccess) {
+      req.session.accountData.account_password = hashedPassword;
+
       req.flash("success", "Password updated successfully.");
-      res.redirect("/account/management"); // Redirect after successful update
+      return res.redirect("/account");
     } else {
       req.flash("error", "Failed to update the password. Please try again.");
-      res.redirect("/account/management");
+      return res.redirect("/account");
     }
   } catch (error) {
     console.error("Error updating password for account ID:", account_id, "-", error.message);
     req.flash("error", "An unexpected error occurred. Please try again later.");
-    next(error);
+    return next(error);
   }
 }
-
 
 module.exports = {
   buildLogin,

@@ -88,7 +88,7 @@ async function getAccountById(account_id) {
 async function updatePassword(account_id, hashedPassword) {
   const sql = `
     UPDATE account
-    SET password = $1
+    SET account_password = $1
     WHERE account_id = $2;
   `;
   const values = [hashedPassword, account_id];
