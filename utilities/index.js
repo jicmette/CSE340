@@ -110,7 +110,7 @@ Util.buildItemDetails = async function (vehicleData) {
  * ************************************ */
 Util.getClassificationsDropdown = async function (req, res, next) {
   let data = await invModel.getClassifications();
-  let dropdown = '<select id="classification" name="classification" required>';
+  let dropdown = '<select id="classification" name="classification_id" required>';
   dropdown +=
     '<option value="" selected>-- Choose a Classification --</option>';
   data.rows.forEach((row) => {

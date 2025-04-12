@@ -123,7 +123,7 @@ invCont.buildAddVehicle = async function (req, res, next) {
 invCont.addNewVehicleFromUser = async function (req, res, next) {
   try {
     const {
-      classification,
+      classification_id,
       inv_make,
       inv_model,
       inv_year,
@@ -133,10 +133,10 @@ invCont.addNewVehicleFromUser = async function (req, res, next) {
       inv_price,
       inv_miles,
       inv_color,
-    } = req.body; // Receives for data.
+    } = req.body;
 
     const newVehicle = await invModel.insertNewVehicle({
-      classification_id: classification, // Mapping dropdown value to classification_id
+      classification_id,
       inv_make,
       inv_model,
       inv_year,
