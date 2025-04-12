@@ -28,9 +28,11 @@ const inventoryValidate = {
 
   // Validation rules for adding a new vehicle
   vehicleRules: () => [
-    body("classification")
+    body("classification_id")
       .notEmpty()
-      .withMessage("Classification is required."),
+      .withMessage("Classification ID is required.")
+      .isInt()
+      .withMessage("Classification ID is an integer."),
     body("inv_make")
       .trim()
       .escape()

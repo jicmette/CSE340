@@ -223,6 +223,12 @@ invCont.updateInventory = async function (req, res, next) {
       inv_id,
     } = req.body;
 
+    // Validation: Check if classification_id is present
+    if (!classification_id) {
+      req.flash("error", "Classification ID is required.");
+      return res.redirect(`/inventory/edit/${inv_id}`); // Redirect back to the edit form
+    }
+
     const updateResult = await invModel.updateInventory(
       classification_id,
       inv_make,
@@ -236,17 +242,13 @@ invCont.updateInventory = async function (req, res, next) {
       inv_color,
       inv_id
     );
-    console.log("Body", req.body);
 
     if (updateResult) {
       const itemName = `${inv_make} ${inv_model}`;
       req.flash("notice", `The ${itemName} was successfully updated.`);
       return res.redirect("/inv");
     } else {
-      const classificationSelect = await utilities.buildClassificationList(
-        classification_id
-      );
-
+      const classificationSelect = await utilities.buildClassificationList(classification_id);
       const itemName = `${inv_make} ${inv_model}`;
       req.flash("notice", "Sorry, the update failed.");
 
@@ -272,7 +274,6 @@ invCont.updateInventory = async function (req, res, next) {
     return next(error);
   }
 };
-
 /* ***************************
  *  Delete confirmation view
  * ************************** */
