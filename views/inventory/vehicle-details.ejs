@@ -1,1 +1,44 @@
 <%- vehicleHTML %>
+
+<div id="reviews">
+  <h3>Customer Reviews</h3>
+
+  <% if (reviews && reviews.length > 0) { %>
+    <ul class="review-list">
+      <% reviews.forEach(review => { %>
+        <li class="review-item">
+          <div class="review-header">
+            <strong class="review-author"><%= review.account_firstname %></strong>
+            <span class="review-rating"><%= review.rating %> Stars</span>
+          </div>
+          <p class="review-comment"><%= review.comment %></p>
+          <small class="review-date"><%= new Date(review.created_at).toLocaleString() %></small>
+        </li>
+      <% }) %>
+    </ul>
+  <% } else { %>
+    <p class="no-reviews-message">No reviews yet. Be the first to leave one!</p>
+  <% } %>
+
+  <form action="/inv/detail/<%= vehicle.inv_id %>/review" method="POST" id="review-form">
+    <h4>Leave a Review</h4>
+
+    <label for="rating">Rating (1-5):</label>
+    <select name="rating" id="rating" required>
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+    </select>
+
+    <label for="comment">Comment:</label>
+    <textarea name="comment" id="comment" rows="4" placeholder="Write your review..." required></textarea>
+    <input type="hidden" name="inv_id" value="<%= vehicle.inv_id %>">
+    <button type="submit">Submit Review</button>
+  </form>
+</div>
+
+
+
+  

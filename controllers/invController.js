@@ -20,24 +20,66 @@ invCont.buildByClassificationId = async function (req, res, next) {
 };
 
 /* ***************************
- *  Build vehicle detail view
+ *  Build vehicle detail view with reviews
  * ************************** */
 invCont.buildItemDetailById = async function (req, res, next) {
+  const inv_id = req.params.inv_id;
+
   try {
-    const inv_id = req.params.inv_id;
-    const vehicleData = await invModel.getInventoryItemById(inv_id);
-    const vehicleHTML = await utilities.buildItemDetails(vehicleData);
+    const vehicle = await invModel.getInventoryItemById(inv_id);
+    if (!vehicle) {
+      req.flash("error", "Vehicle not found.");
+      return res.redirect("/inv");
+    }
+
+    const vehicleHTML = await utilities.buildItemDetails(vehicle);
+
+    const reviews = await invModel.getReviewsByVehicleId(inv_id);
+
     let nav = await utilities.getNav();
+
     res.render("./inventory/vehicle-details", {
-      title: `${vehicleData.inv_make} ${vehicleData.inv_model}`,
+      title: `${vehicle.inv_make} ${vehicle.inv_model}`,
       nav,
       vehicleHTML,
+      reviews,
+      vehicle,
     });
   } catch (error) {
-    console.error("Error building vehicle detail view");
-    next(error);
+    console.error("Error fetching vehicle details or reviews:", error.message);
+    req.flash("error", "Failed to load vehicle details.");
+    res.redirect("/inv");
   }
 };
+
+
+/* ***************************
+ *  Add reviews to the database
+ * ************************** */
+invCont.addReview = async function (req, res, next) {
+  const inv_id = req.params.inv_id;
+  const { rating, comment } = req.body;
+  
+  const account_id = req.session.accountData?.account_id;
+
+  console.log("Session Data:", account_id);
+  
+  if (!account_id) {
+    req.flash("error", "You must be logged in to submit a review");
+    return res.redirect(`/account`);
+  }
+
+  try {
+    await invModel.addReview(inv_id, account_id, rating, comment);
+    req.flash("success", "Review added successfully!");
+    res.redirect(`/account`);
+
+  } catch (error) {
+    console.error("Review error:", error);
+    req.flash("error", "Failed to add review");
+    res.redirect(`/account`);
+  }
+}
 
 /* ***************************
  *  Build the Management view

@@ -6,12 +6,18 @@ const invController = require("../controllers/invController");
 const utilities = require("../utilities/index");
 const { getInventoryByClassificationId } = require("../models/inventory-model");
 
+
 //Public Routes
 // Route to build inventory by classification view
 router.get("/type/:classificationId", invController.buildByClassificationId);
+
 // Route to build vehicle detail view
 router.get("/detail/:inv_id", invController.buildItemDetailById);
 
+//Route to send reviews
+router.post("/detail/:inv_id/review", 
+  invController.addReview
+);
 
 //Employee and Admin Routes
 // Route to management view
